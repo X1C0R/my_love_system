@@ -40,6 +40,7 @@
             this.LogoBox = new System.Windows.Forms.PictureBox();
             this.BackGroundPanel = new System.Windows.Forms.Panel();
             this.HouseButton = new System.Windows.Forms.Button();
+            this.recentPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HelpBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
@@ -99,7 +100,7 @@
             this.AddButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.AddButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AddButton.Font = new System.Drawing.Font("Sandra", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddButton.ForeColor = System.Drawing.Color.SeaShell;
             this.AddButton.Location = new System.Drawing.Point(26, 93);
             this.AddButton.Name = "AddButton";
@@ -145,11 +146,11 @@
             // 
             this.Title.AutoSize = true;
             this.Title.BackColor = System.Drawing.Color.Transparent;
-            this.Title.Font = new System.Drawing.Font("HP Simplified", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Title.ForeColor = System.Drawing.Color.Transparent;
             this.Title.Location = new System.Drawing.Point(75, 14);
             this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(177, 32);
+            this.Title.Size = new System.Drawing.Size(196, 31);
             this.Title.TabIndex = 5;
             this.Title.Text = "Budget Buddy";
             this.Title.Click += new System.EventHandler(this.Title_Click);
@@ -172,6 +173,7 @@
             // BackGroundPanel
             // 
             this.BackGroundPanel.BackColor = System.Drawing.Color.SeaShell;
+            this.BackGroundPanel.Controls.Add(this.recentPanel);
             this.BackGroundPanel.Controls.Add(this.HeaderPanel);
             this.BackGroundPanel.Controls.Add(this.AddButton);
             this.BackGroundPanel.Controls.Add(this.HouseButton);
@@ -201,6 +203,17 @@
             this.HouseButton.MouseLeave += new System.EventHandler(this.HouseButton_MouseLeave);
             this.HouseButton.MouseHover += new System.EventHandler(this.HouseButton_MouseHover);
             // 
+            // recentPanel
+            // 
+            this.recentPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.recentPanel.Location = new System.Drawing.Point(0, 369);
+            this.recentPanel.Name = "recentPanel";
+            this.recentPanel.Size = new System.Drawing.Size(804, 293);
+            this.recentPanel.TabIndex = 7;
+            this.recentPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.recentPanel_Paint);
+            // 
             // BBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -212,7 +225,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BBForm";
             this.Text = "Budget Buddy";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Form1_LoadAsync);
             this.HeaderPanel.ResumeLayout(false);
             this.HeaderPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HelpBox)).EndInit();
@@ -236,6 +249,7 @@
         private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Panel BackGroundPanel;
         private System.Windows.Forms.PictureBox HelpBox;
+        private System.Windows.Forms.FlowLayoutPanel recentPanel;
     }
 }
 

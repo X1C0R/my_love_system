@@ -1,22 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace testt
 {
-    public partial class HousingForm : Form
+    public partial class added : Form
     {
-        public string SavedProjectName { get; private set;  }
+
+        public string SavedProjectName { get; private set; }
 
         private List<(string category, string name, double amount)> CollectAllData()
         {
@@ -50,7 +50,7 @@ namespace testt
 
             return list;
         }
-        public HousingForm()
+        public added()
         {
             InitializeComponent();
             SetRoundedButton(btnAdd, 20);
@@ -95,7 +95,7 @@ namespace testt
 
             btnAdd1.FlatStyle = FlatStyle.Flat;
             btnAdd1.FlatAppearance.BorderSize = 0;
-            btnAdd1 .BackColor = Color.LightSalmon;
+            btnAdd1.BackColor = Color.LightSalmon;
             btnAdd1.ForeColor = Color.White;
 
             btnRemove1.FlatStyle = FlatStyle.Flat;
@@ -215,7 +215,7 @@ namespace testt
             txtEdit.BorderStyle = BorderStyle.None;
             txtEdit.BackColor = PanelTitle.BackColor;
             txtEdit.ForeColor = ProjectName.ForeColor;
-            txtEdit.TextAlign = HorizontalAlignment.Center; 
+            txtEdit.TextAlign = HorizontalAlignment.Center;
 
             PanelTitle.Controls.Add(txtEdit);
             txtEdit.BringToFront();
@@ -385,11 +385,11 @@ namespace testt
 
                     if (double.TryParse(cell.Value.ToString(), out value))
                     {
-                        cell.Value = value.ToString("N0"); 
+                        cell.Value = value.ToString("N0");
                     }
                     else
                     {
-                       
+
                         cell.Value = "";
                     }
                 }
@@ -703,7 +703,7 @@ namespace testt
             SummaryData.Rows.Add("Debt", debt.ToString("N0"));
             SummaryData.Rows.Add("Balance", balance.ToString("N0"));
 
-            int lastRow =   SummaryData.Rows.Count - 1;
+            int lastRow = SummaryData.Rows.Count - 1;
 
             if (balance >= 0)
                 SummaryData.Rows[lastRow].DefaultCellStyle.ForeColor = Color.Green;
@@ -780,7 +780,7 @@ namespace testt
 
         private void ProjectName_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void lblIncome_Click(object sender, EventArgs e)
@@ -788,11 +788,53 @@ namespace testt
 
         }
 
-        private void IncomeTotal_Click(object sender, EventArgs e)
+        private void btnAdd_Click_1(object sender, EventArgs e)
         {
+            IncomeData.Rows.Add();
+        }
 
+        private void btnRemove_Click_1(object sender, EventArgs e)
+        {
+            {
+                if (IncomeData.SelectedRows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in IncomeData.SelectedRows)
+                    {
+                        IncomeData.Rows.Remove(row);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Select a row first.");
+                }
+            }
+        }
+
+        private void btnAdd2_Click_1(object sender, EventArgs e)
+        {
+            BillsData.Rows.Add();
+        }
+
+        private void btnAdd4_Click_1(object sender, EventArgs e)
+        {
+            DebtData.Rows.Add();
+        }
+
+        private void btnRemove2_Click_1(object sender, EventArgs e)
+        {
+            {
+                if (BillsData.SelectedRows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in BillsData.SelectedRows)
+                    {
+                        BillsData.Rows.Remove(row);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Select a row first.");
+                }
+            }
         }
     }
 }
-
-

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +21,17 @@ namespace testt
             InitializeComponent();
            
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_LoadAsync(object sender, EventArgs e)
         {
             HouseButton.FlatStyle = FlatStyle.Flat;
             HouseButton.FlatAppearance.BorderSize = 0;
             AddButton.FlatStyle = FlatStyle.Flat;
             AddButton.FlatAppearance.BorderSize = 0;
             ApplyRoundedToAll(this, 40);
+
+            
+
+            await LoadProjects();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,6 +51,12 @@ namespace testt
 
             btn.BackgroundImage = bmp;
             btn.BackgroundImageLayout = ImageLayout.Stretch;
+
+
+           
+
+
+
         }
         private void label1_Click(object sender, EventArgs e)
         {
@@ -74,6 +85,10 @@ namespace testt
 
             btn.BackgroundImage = bmp;
             btn.BackgroundImageLayout = ImageLayout.Stretch;
+
+            //added add = new added();
+            //add.Show();
+            //this.Hide();
         }
         private void HouseButton_MouseEnter(object sender, EventArgs e)
         {
@@ -236,6 +251,97 @@ namespace testt
             form3.Show();
         }
 
+        private async Task<List<string>> GetProjects()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("apikey", deytabeys.Apikey);
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + deytabeys.Apikey);
 
+                var response = await client.GetAsync($"{deytabeys.Url}/rest/v1/budget_projects?select=project_name");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show(await response.Content.ReadAsStringAsync());
+                    return new List<string>();
+                }
+
+                string json = await response.Content.ReadAsStringAsync();
+
+                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(json);
+
+                List<string> projects = new List<string>();
+
+                foreach (var item in data)
+                {
+                    projects.Add((string)item.project_name);
+                }
+
+                return projects;
+            }
+        }
+
+        private int nextY = 50;
+
+        private async Task LoadProjects()
+        {
+            try
+            {
+                var projects = await GetProjects();
+
+                //MessageBox.Show("Loaded: " + projects.Count); // debug
+
+                foreach (var name in projects)
+                {
+                    AddProjectCard(name);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void AddProjectCard(string projectName)
+        {
+            Panel card = new Panel();
+            card.Size = new Size(153, 218);
+            card.BackColor = Color.LightSalmon;
+            card.Margin = new Padding(15); 
+
+
+            // rounded corners (reuse your method if you want)
+            card.Region = new Region(GetRoundedRectangle(card.ClientRectangle, 30));
+
+            System.Windows.Forms.Label lbl = new System.Windows.Forms.Label();
+            lbl.Text = projectName;
+            lbl.Dock = DockStyle.Fill;
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+            lbl.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lbl.ForeColor = Color.White;
+
+            card.Controls.Add(lbl);
+
+            void OpenProject()
+            {
+                MessageBox.Show("Open project: " + projectName);
+            }
+
+            // panel click
+            card.Click += (s, e) => OpenProject();
+
+            // label click (same behavior)
+            lbl.Click += (s, e) => OpenProject();
+
+            recentPanel.Controls.Add(card);
+        }
+
+        private void recentPanel_Paint(object sender, PaintEventArgs e)
+        {
+            recentPanel.AutoScroll = true;
+            recentPanel.FlowDirection = FlowDirection.LeftToRight;
+            recentPanel.WrapContents = true;
+            recentPanel.BackColor = Color.Transparent;
+        }
     }
 }
